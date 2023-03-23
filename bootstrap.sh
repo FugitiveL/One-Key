@@ -39,6 +39,7 @@ apt install nginx -y
 
 echo -e "\n acme...如有红色报错可忽略"
 curl https://get.acme.sh | sh
+ln -s  /root/.acme.sh/acme.sh /usr/local/bin/acme.sh
 acme.sh --set-default-ca --server letsencrypt
 echo -e "\n acme...改解析域名"
 echo -n "输入你的域名: "
