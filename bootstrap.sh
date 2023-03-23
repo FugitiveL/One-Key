@@ -76,13 +76,15 @@ http {
    gzip on;
 
    server {
+
+
        listen 443 ssl;
        listen [::]:443 ssl;
-
+      
        server_name $DOMAIN;  #你的域名
        ssl_certificate       /etc/x-ui-yg/server.crt;  #证书位置
        ssl_certificate_key   /etc/x-ui-yg/server.key; #私钥位置
-
+      
        ssl_session_timeout 1d;
        ssl_session_cache shared:MozSSL:10m;
        ssl_session_tickets off;
@@ -105,6 +107,7 @@ http {
            proxy_set_header Accept-Language "zh-CN";
        }
 
+
        location /$SHUNT {   #分流路径
            proxy_redirect off;
            proxy_pass http://127.0.0.1:10000; #Xray端口
@@ -115,7 +118,7 @@ http {
            proxy_set_header X-Real-IP $remote_addr;
            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
        }
-
+      
        location /$SHUNT-xui {   #xui路径
            proxy_redirect off;
            proxy_pass http://127.0.0.1:4499;  #xui监听端口
@@ -127,14 +130,22 @@ http {
    server {
        listen 80;
        location /.well-known/ {
-            root /var/www/html;
-        }
+              root /var/www/html;
+           }
        location / {
-            rewrite ^(.*)$ https://$host$1 permanent;
-        }
+               rewrite ^(.*)$ https://$host$1 permanent;
+           }
    }
 }
+
+
 " >/etc/nginx/nginx.conf
+
+
+
+
+
+
 
 echo -e "\n重启nginx加载新配置"
 systemctl reload nginx
