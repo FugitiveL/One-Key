@@ -43,15 +43,15 @@ acme.sh --set-default-ca --server letsencrypt
 echo -e "\n acme...改解析域名"
 echo -n "输入你的域名: "
 read DOMAIN
-acme.sh --issue -d $DOMAIN -k ec-256 --webroot /var/www/html
+acme.sh  --issue -d $DOMAIN -k ec-256 --webroot  /var/www/html
 echo -e "\n acme...解析域名"
-acme.sh --install-cert -d $DOMAIN --ecc --key-file /etc/x-ui-yg/server.key --fullchain-file /etc/x-ui-yg/server.crt --reloadcmd "systemctl force-reload nginx"
+acme.sh --install-cert -d $DOMAIN  --ecc --key-file       /etc/x-ui-yg/server.key  --fullchain-file /etc/x-ui-yg/server.crt --reloadcmd     "systemctl force-reload nginx"
 
 echo -e "\n备份nginx默认配置项"
 sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 echo -e "\n添加nginx默认配置"
 
-echo -n "输入分流路径: "
+echo -n "输入分流路径/UUID: "
 read SHUNT
 
 echo "user www-data;
