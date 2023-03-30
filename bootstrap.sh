@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 echo -e "\n停止apache2服务"
 service apache2 stop
