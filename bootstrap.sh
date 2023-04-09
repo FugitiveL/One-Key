@@ -1,37 +1,37 @@
 #!/bin/sh
 
-echo -e "\n停止apache2服务"
+echo -e "\n停止Apache2服务。"
 service apache2 stop
-echo -e "\n禁用apache2服务"
+echo -e "\n禁止Apache2服务自动启动。"
 systemctl disable apache2
-echo -e "\n删除apache2相关1..."
+echo -e "\n卸载Apache2及其相关组件。"
 apt-get --purge remove apache2.2 apache2-doc apache2-utils -y
-echo -e "\n删除apache2相关2..."
+echo -e "\n删除Apache2.2-common软件包，并在卸载时自动清除相关配置文件。"
 apt-get --purge remove apache2.2-common
-echo -e "\n移除孤儿软件包"
+echo -e "\n自动删除不再需要的依赖软件包，以释放磁盘空间。"
 apt-get autoremove
-echo -e "\n删除残留的apache文件"
+echo -e "\n删除所有包含 "apache" 的文件和目录。"
 find /etc -name "*apache*" -exec rm -rf {} \;
-echo -e "\n删除apache静态资源文件"
+echo -e "\n删除Apache2的默认网站目录。"
 sudo rm -rf /var/www
-echo -e "\n删除libapache2-mod-jk"
+echo -e "\n删除Apache2的JK模块。"
 rm -rf /etc/libapache2-mod-jk
-echo -e "\n删除ct-preset.list源"
+echo -e "\n删除无用的apt源。"
 rm -f /etc/apt/sources.list.d/ct-preset.list
-echo -e "\n添加nameserver到resolv.conf"
-echo -e "nameserver 2a01:4f8:c2c:123f::1" >/etc/resolv.conf
+echo -e "\n将IPv6 DNS服务器添加到resolv.conf文件。"
+echo -e "nameserver 2a01:4f8:c2c:123f::1\nnameserver 8.8.8.8" >/etc/resolv.conf
 
-echo -e "\napt 更新..."
+echo -e "\n更新apt包列表。"
 apt update
 
 echo -e "\n安装curl..."
 apt install curl -y
-echo -e "\n安装bash"
+echo -e "\n安装bash..."
 apt install bash -y
 
-echo -e "\n远端安装 CFwarp..."
+echo -e "\n从GitLab下载CFwarp脚本并执行，该脚本用于开启CloudFlare WARP隧道。"
 wget -N --no-check-certificate https://gitlab.com/rwkgyg/CFwarp/raw/main/CFwarp.sh && bash CFwarp.sh
-echo -e "\n远端安装 x-ui..."
+echo -e "\n从GitLab下载XUI面板安装脚本并执行，该脚本用于安装和配置XUI面板。"
 wget -N https://gitlab.com/rwkgyg/x-ui-yg/raw/main/install.sh && bash install.sh
 
 echo -e "\n安装nginx服务器"
@@ -159,11 +159,15 @@ echo -e "\n安装防火墙"
 apt install ufw -y
 echo -e "\n启动防火墙"
 ufw enable -y
+
+echo -n "输入VPS端口: "
+read PORT
+
 echo -e "\n防火墙22端口开放"
-ufw allow 22/tcp
+ufw allow $PORT/tcp
 echo -e "\n防火墙80端口开放"
 ufw allow 80
 echo -e "\n防火墙443端口开放"
 ufw allow 443
 
-echo -e "\n搭建完成!!!"
+echo -e "\n搭建完成！！！可以愉快的玩耍了！！！"
