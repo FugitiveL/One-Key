@@ -163,7 +163,7 @@ ufw enable -y
 echo -n "输入VPS端口: "
 read PORT
 
-echo -e "\n防火墙22端口开放"
+echo -e "\n防火墙$PORT端口开放"
 ufw allow $PORT/tcp
 echo -e "\n防火墙80端口开放"
 ufw allow 80
