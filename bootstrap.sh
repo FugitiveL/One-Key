@@ -138,16 +138,6 @@ http {
    }
 }
 
-   server {
-       listen 80;
-       location /.well-known/ {
-              root /var/www/html;
-           }
-       location / {
-               rewrite ^(.*)$ https://$host$1 permanent;
-           }
-   }
-}
 
 
 " >/etc/nginx/nginx.conf
