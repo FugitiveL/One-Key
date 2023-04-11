@@ -91,41 +91,52 @@ http {
        ssl_protocols    TLSv1.2 TLSv1.3;
        ssl_prefer_server_ciphers off;
 
-       location / {
+        location / {
            proxy_pass https://clr2.wfhtony.space/; #伪装网址
            proxy_redirect off;
            proxy_ssl_server_name on;
            sub_filter_once off;
-           sub_filter "clr2.wfhtony.space" \$server_name;
+           sub_filter \"clr2.wfhtony.space\" \$server_name;
            proxy_set_header Host \"clr2.wfhtony.space\";
-           proxy_set_header Referer \"$http_referer\";
-           proxy_set_header X-Real-IP \"$remote_addr\";
-           proxy_set_header User-Agent \"$http_user_agent\";
-           proxy_set_header X-Forwarded-For \"$proxy_add_x_forwarded_for\";
+           proxy_set_header Referer \$http_referer;
+           proxy_set_header X-Real-IP \$remote_addr;
+           proxy_set_header User-Agent \$http_user_agent;
+           proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
            proxy_set_header X-Forwarded-Proto https;
-           proxy_set_header Accept-Encoding "";
+           proxy_set_header Accept-Encoding \"\";
            proxy_set_header Accept-Language \"zh-CN\";
        }
 
 
-       location /$SHUNT {   #分流路径
+       location /87bef3ea-2aab-46b8-926f-0804bcf80549 {   #分流路径
            proxy_redirect off;
            proxy_pass http://127.0.0.1:10000; #Xray端口
            proxy_http_version 1.1;
            proxy_set_header Upgrade \$http_upgrade;
            proxy_set_header Connection \"upgrade\";
-           proxy_set_header Host \"$host\";
-           proxy_set_header X-Real-IP \"$remote_addr\";
-           proxy_set_header X-Forwarded-For \"$proxy_add_x_forwarded_for\";
+           proxy_set_header Host \$host;
+           proxy_set_header X-Real-IP \$remote_addr;
+           proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
        }
       
-       location /$SHUNT-xui {   #xui路径
+       location /87bef3ea-2aab-46b8-926f-0804bcf80549-xui {   #xui路径
            proxy_redirect off;
            proxy_pass http://127.0.0.1:4499;  #xui监听端口
            proxy_http_version 1.1;
-           proxy_set_header Host \"$host\";
+           proxy_set_header Host \$host;
        }
    }
+
+   server {
+       listen 80;
+       location /.well-known/ {
+              root /var/www/html;
+           }
+       location / {
+               rewrite ^(.*)$ https://\$host\$1 permanent;
+           }
+   }
+}
 
    server {
        listen 80;
