@@ -37,11 +37,11 @@ wget -N https://gitlab.com/rwkgyg/x-ui-yg/raw/main/install.sh && bash install.sh
 echo -e "\n安装nginx服务器"
 apt install nginx -y
 
-echo -e "\n acme...如有红色报错可忽略"
+echo -e "\n安装 acme 脚本，如有红色报错可忽略"
 curl https://get.acme.sh | sh
 ln -s  /root/.acme.sh/acme.sh /usr/local/bin/acme.sh
 acme.sh --set-default-ca --server letsencrypt
-echo -e "\n acme...改解析域名"
+echo -e "\n配置证书"
 echo -n "输入你的域名: "
 read DOMAIN
 acme.sh  --issue -d $DOMAIN -k ec-256 --webroot  /var/www/html
