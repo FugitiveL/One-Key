@@ -108,7 +108,7 @@ http {
        }
 
 
-       location /87bef3ea-2aab-46b8-926f-0804bcf80549 {   #分流路径
+       location /$SHUNT {   #分流路径
            proxy_redirect off;
            proxy_pass http://127.0.0.1:10000; #Xray端口
            proxy_http_version 1.1;
@@ -119,7 +119,7 @@ http {
            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
        }
       
-       location /87bef3ea-2aab-46b8-926f-0804bcf80549-xui {   #xui路径
+       location /$SHUNT-xui {   #xui路径
            proxy_redirect off;
            proxy_pass http://127.0.0.1:4499;  #xui监听端口
            proxy_http_version 1.1;
