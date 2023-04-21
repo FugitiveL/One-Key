@@ -30,7 +30,7 @@ echo -e "\n安装bash..."
 apt install bash -y
 
 echo -e "\n从GitLab下载CFwarp脚本并执行，该脚本用于开启CloudFlare WARP隧道。"
-wget -N --no-check-certificate https://gitlab.com/rwkgyg/CFwarp/raw/main/CFwarp.sh && bash CFwarp.sh
+wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh
 echo -e "\n从GitLab下载XUI面板安装脚本并执行，该脚本用于安装和配置XUI面板。"
 wget -N https://gitlab.com/rwkgyg/x-ui-yg/raw/main/install.sh && bash install.sh
 
