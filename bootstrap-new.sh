@@ -56,7 +56,7 @@ apt install bash -y
 
 
 echo -e "\n从GitLab下载CFwarp脚本并执行，该脚本用于开启CloudFlare WARP隧道。"
-wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh
+wget -N https://gitlab.com/Misaka-blog/warp-script/-/raw/main/warp.sh && bash warp.sh
 echo -e "\n从GitLab下载XUI面板安装脚本并执行，该脚本用于安装和配置XUI面板。"
 bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
 
