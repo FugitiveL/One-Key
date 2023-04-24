@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Check if the system is Ubuntu or Debian
+#Check if the system is Ubuntu or Debian
 if [ "$(uname -s)" != "Linux" ] || ! command -v lsb_release >/dev/null 2>&1; then
 echo "This script only supports Ubuntu and Debian systems."
 exit 1
