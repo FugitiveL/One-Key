@@ -59,7 +59,6 @@ echo -e "\n从GitLab下载CFwarp脚本并执行，该脚本用于开启CloudFlar
 wget -N https://gitlab.com/Misaka-blog/warp-script/-/raw/main/warp.sh && bash warp.sh
 
 # 定义4个版本的面板安装命令，方便根据需要选择
-echo "选择x-ui版本......"
 install_cmds=(
   "bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)"
   "bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)"
@@ -108,19 +107,11 @@ while true; do
   eval "$cmd"
 
   # 询问是否重新运行安装程序
-  echo -e "\n"
-  read -p "安装完成后，是否需要重新运行安装程序进行安装？[y/n]" retry_installer
-  case $retry_installer in
-  "y" | "Y")
-    echo -e "\n\n"
-    continue
-    ;;
-  *)
-    exit 0
-    ;;
-  esac
+  read -p "安装完成，是否需要重新安装x-ui面板？(y/n):" reinstall
+  if [ "$reinstall" != "y" ]; then
+    break
+  fi
 done
-
 
 
 # 提示用户选择是否重装 Nginx
