@@ -57,8 +57,71 @@ apt install bash -y
 
 echo -e "\n从GitLab下载CFwarp脚本并执行，该脚本用于开启CloudFlare WARP隧道。"
 wget -N https://gitlab.com/Misaka-blog/warp-script/-/raw/main/warp.sh && bash warp.sh
-echo -e "\n从GitLab下载XUI面板安装脚本并执行，该脚本用于安装和配置XUI面板。"
-bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
+
+# 定义4个版本的面板安装命令，方便根据需要选择
+echo "选择x-ui版本......"
+install_cmds=(
+  "bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)"
+  "bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)"
+  "bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)"
+  "bash <(wget -qO- https://raw.githubusercontent.com/sing-web/x-ui/main/install.sh)"
+)
+
+# 定义选项数组
+options=("原版 x-ui" "MHSanaei 3x-ui" "vaxilu x-ui" "Misaka x-ui" "退出")
+
+while true; do
+  # 选择安装版本
+  echo "请选择要安装的x-ui面板版本："
+  select option in "${options[@]}"; do
+    case $option in
+    "原版 x-ui")
+      cmd=${install_cmds[0]}
+      break
+      ;;
+    "MHSanaei 3x-ui")
+      cmd=${install_cmds[1]}
+      break
+      ;;
+    "vaxilu x-ui")
+      cmd=${install_cmds[2]}
+      break
+      ;;
+    "Misaka x-ui")
+      cmd=${install_cmds[3]}
+      break
+      ;;
+    "退出")
+      exit 0
+      ;;
+    *)
+      echo "无效的选择，请输入1~4的数字."
+      ;;
+    esac
+  done
+
+  # 运行命令进行安装
+  echo "即将运行以下安装命令："
+  echo "$cmd"
+  echo -e "\n请等待安装程序运行完成...\n"
+  sleep 1
+  eval "$cmd"
+
+  # 询问是否重新运行安装程序
+  echo -e "\n"
+  read -p "安装完成后，是否需要重新运行安装程序进行安装？[y/n]" retry_installer
+  case $retry_installer in
+  "y" | "Y")
+    echo -e "\n\n"
+    continue
+    ;;
+  *)
+    exit 0
+    ;;
+  esac
+done
+
+
 
 # 提示用户选择是否重装 Nginx
 echo  "建议重装 Nginx"
