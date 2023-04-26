@@ -11,18 +11,21 @@ echo "This script only supports Ubuntu and Debian systems."
 exit 1
 fi
 
-echo -n "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载，按n退出执行):"
+echo -e "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载，按n退出执行):\c"
+update=false
 for i in $(seq 5 -1 1); do
   echo -n "$i "
   read -t 1 -n 1 key
   if [[ $key == "n" ]]; then
-    echo "选择了不卸载Apache2"
-    exit 0
+      echo -e "\n选择了不卸载Apache2"
+      exit 0
+  elif [[ $key == "" ]]; then
+      update=true
+      break
   fi
 done
-echo ""
-read -n1 -p "默认选项是卸载，是否继续执行？(按回车继续，按其他键退出)" execute
-if [ "$execute" == '' ]; then
+if [[ $update == "true" ]]; then
+  echo ""
   echo "选择了卸载Apache2"
   # 停止Apache2服务
   service apache2 stop
@@ -45,7 +48,7 @@ if [ "$execute" == '' ]; then
   # 删除无用的apt源
   rm -rf /etc/apt/sources.list.d/ondrej*
 else
-  echo "选择了不卸载Apache2"
+  echo -e "\n选择了不卸载Apache2"
 fi
 
 
