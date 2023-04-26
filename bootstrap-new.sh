@@ -11,18 +11,17 @@ echo "This script only supports Ubuntu and Debian systems."
 exit 1
 fi
 
-echo -e "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载，按n退出执行):\c"
-update=false
+echo "卸载Apache2即将开始，请在倒计时结束前按n取消操作"
+echo ""
+
 for i in $(seq 5 -1 1); do
-  echo -n "$i "
-  read -t 1 -n 1 key
-  if [[ $key == "n" ]]; then
-      echo -e "\n选择了不卸载Apache2"
-      exit 0
-  elif [[ $key == "" ]]; then
-      update=true
-      break
-  fi
+    echo "倒计时 $i 秒，按n取消操作..."
+    read -t 1 -n 1 # 等待1秒，读取用户输入
+    if [[ $? -eq 0 ]];then
+        if [[ $REPLY =~ ^[Nn]$ ]];then
+            exit
+        fi
+    fi
 done
 if [[ $update == "true" ]]; then
   echo ""
