@@ -34,7 +34,7 @@ function uninstall_apache2 {
     rm -f /etc/apt/sources.list.d/ct-preset.lis
 }
 
-read -t 5 -p "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载): " -n 1 -r input
+read -t 5 -p "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载): " -n 1 -r input &
 echo ""
 for i in {5..1}
 do
@@ -43,13 +43,21 @@ do
 done
 echo ""
 read -r -s -n 1 -t 5 input
-if [[ $input == "" ]];
+if [[ $input == $'\n' ]];
 then
     echo -e "\n已手动执行卸载 Apache2"
     uninstall_apache2
 else
-    echo -e "\n倒计时期间未收到输入，已自动执行卸载 Apache2"
-    uninstall_apache2
+    # 等待`read`命令结束
+    wait $!
+fi
+
+# 检查用户输入的字符是否是空白字符（例如`Y`或`N`）
+if [[ $input =~ ^[Yy]$ ]]; then
+  echo "卸载 Apache2"
+  uninstall_apache2
+else
+  echo "已取消卸载"
 fi
 
 
