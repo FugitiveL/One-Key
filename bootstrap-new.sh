@@ -11,11 +11,7 @@ echo "This script only supports Ubuntu and Debian systems."
 exit 1
 fi
 
-echo -e "\n将在5秒钟内开始卸载 Apache2，按下回车键立即执行，或者等待5秒后自动执行..."
-read -t 5 -r -s -n 1
-if [ $? -eq 0 ]
-then
-    echo -e "\n已手动执行卸载 Apache2"
+function uninstall_apache2 {
     echo -e "\n停止Apache2服务。"
     systemctl stop apache2
     echo -e "\n禁止Apache2服务自动启动。"
@@ -36,9 +32,33 @@ then
     rm -rf /etc/libapache2-mod-jk
     echo -e "\n删除无用的apt源。"
     rm -f /etc/apt/sources.list.d/ct-preset.lis
+}
+
+echo -e "\n将在5秒钟内开始卸载 Apache2，按下回车键立即执行，或者等待5秒后自动执行..."
+for i in {5..1}
+do
+    sleep 1
+    echo -ne "\r倒计时 $i"
+done
+echo ""
+read -r -s -n 1 -t 5
+if [ $? -eq 0 ]
+then
+    echo -e "\n已手动执行卸载 Apache2"
+    uninstall_apache2
 else
-    echo -e "\n用户取消了自动卸载 Apache2"
+    echo -e "\n倒计时期间未收到输入，是否继续执行卸载 Apache2？[y/n]"
+    read -r -n 1
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        echo -e "\n已确认执行卸载 Apache2"
+        uninstall_apache2
+    else
+        echo -e "\n已取消执行卸载 Apache2"
+    fi
 fi
+
+
 
 
 
