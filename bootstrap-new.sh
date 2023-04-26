@@ -47,19 +47,9 @@ then
     echo -e "\n已手动执行卸载 Apache2"
     uninstall_apache2
 else
-    echo -e "\n倒计时期间未收到输入，是否继续执行卸载 Apache2？[y/n]"
-    read -r -n 1
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        echo -e "\n已确认执行卸载 Apache2"
-        uninstall_apache2
-    else
-        echo -e "\n已取消执行卸载 Apache2"
-    fi
+    echo -e "\n倒计时期间未收到输入，已自动执行卸载 Apache2"
+    uninstall_apache2
 fi
-
-
-
 
 
 
