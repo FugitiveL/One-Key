@@ -42,7 +42,7 @@ do
 done
 echo ""
 read -r -s -n 1 -t 5 input
-if [[ $input == "" ]];
+if [[ $input == $'\n' ]];
 then
     echo -e "\n已手动执行卸载 Apache2"
     uninstall_apache2
