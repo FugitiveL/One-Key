@@ -11,36 +11,43 @@ echo "This script only supports Ubuntu and Debian systems."
 exit 1
 fi
 
-提示用户选择是否卸载 Apache2
-read -t 5 -p "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载): " -n 1 -r uninstall_apache2
+echo -n "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载，按n退出执行):"
+for i in $(seq 5 -1 1); do
+  echo -n "$i "
+  read -t 1 -n 1 key
+  if [[ $key == "n" ]]; then
+    echo "选择了不卸载Apache2"
+    exit 0
+  fi
+done
 echo ""
-
-if [[ $uninstall_apache2 =~ ^[Yy]$ ]]
-then
-echo "开始卸载 apache2..."
-	
-	echo -e "\n停止Apache2服务。"
-	systemctl stop apache2
-	echo -e "\n禁止Apache2服务自动启动。"
-	systemctl disable apache2
-	echo -e "\n强制杀死apache2的进程，终止所有 Apache2 进程并关闭 Apache2 服务"
-	pkill -9 apache2
-	echo -e "\n卸载Apache2及其相关组件。"
-	apt-get --purge remove apache2* libapache2* -y
-	echo -e "\n删除Apache2.2-common软件包，并在卸载时自动清除相关配置文件。"
-	apt-get --purge remove apache2.2-common
-	echo -e "\n自动删除不再需要的依赖软件包，以释放磁盘空间。"
-	apt-get autoremove -y
-	echo -e "\n删除所有包含 "apache" 的文件和目录。"
-	find /etc -name "*apache*" -exec rm -rf {} \;
-	echo -e "\n删除Apache2的默认网站目录。"
-	sudo rm -rf /var/www
-	echo -e "\n删除Apache2的JK模块。"
-	rm -rf /etc/libapache2-mod-jk
-	echo -e "\n删除无用的apt源。"
-	rm -f /etc/apt/sources.list.d/ct-preset.list
-
+read -n1 -p "默认选项是卸载，是否继续执行？(按回车继续，按其他键退出)" execute
+if [ "$execute" == '' ]; then
+  echo "选择了卸载Apache2"
+  # 停止Apache2服务
+  service apache2 stop
+  # 禁止Apache2服务自动启动
+  systemctl disable apache2
+  # 强制杀死apache2的进程，终止所有 Apache2 进程并关闭 Apache2 服务
+  pkill apache2
+  # 卸载Apache2及其相关组件
+  apt-get -y remove apache2*
+  # 删除Apache2.2-common软件包，并在卸载时自动清除相关配置文件
+  apt-get -y purge apache2.2-common
+  # 自动删除不再需要的依赖软件包，以释放磁盘空间
+  apt-get -y autoremove
+  # 删除所有包含“apache”的文件和目录
+  find / -name "*apache*" -exec rm -rf {} \;
+  # 删除Apache2的默认网站目录
+  rm -rf /var/www/html
+  # 删除Apache2的JK模块
+  rm -rf /usr/lib/apache2/modules/mod_jk.so
+  # 删除无用的apt源
+  rm -rf /etc/apt/sources.list.d/ondrej*
+else
+  echo "选择了不卸载Apache2"
 fi
+
 
 echo -e "\n将IPv6 DNS服务器添加到resolv.conf文件。"
 ip -4 addr show | grep -oP '(?<=inet\s)\d+(.\d+){3}' | while read ip; do echo "nameserver 8.8.8.8"; done > /etc/resolv.conf
