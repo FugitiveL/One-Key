@@ -37,21 +37,18 @@ function uninstall_apache2 {
 # 提示用户选择是否重装 Nginx
 read -t 5 -p "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载): " -n 1 -r input
 
-echo ""
 
-if [[ $input =~ ^[Yy]$ ]];
+if [[ $input =~ ^[Yy]$ ]] || [[ $input == $'\n' ]];
 then
-  echo "卸载 Apache2"
+  echo "手动确认卸载 Apache2相关"
   uninstall_apache2
 elif [[ $input == "" ]];
 then
   # 倒计时结束后无人操作
-  echo -e "\n倒计时结束，自动选择卸载"
+  echo -e "\n倒计时结束，自动选择卸载 Apache2"
   uninstall_apache2
 else
-  # 手动选择
-  echo -e "\n已手动执行卸载 Apache2"
-  uninstall_apache2
+  echo -e "\n已取消卸载 Apache2"
 fi
 
 
