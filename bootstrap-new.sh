@@ -80,16 +80,8 @@ apt install bash -y
 echo -e "\n从GitLab下载CFwarp脚本并执行，该脚本用于开启CloudFlare WARP隧道。"
 wget -N https://gitlab.com/Misaka-blog/warp-script/-/raw/main/warp.sh && bash warp.sh
 
-# 定义4个版本的面板安装命令，方便根据需要选择
-install_cmds=(
-  "bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)"
-  "bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)"
-  "bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)"
-  "bash <(wget -qO- https://raw.githubusercontent.com/sing-web/x-ui/main/install.sh)"
-)
-
 # 定义选项数组
-options=("原版 x-ui" "MHSanaei 3x-ui" "vaxilu x-ui" "Misaka x-ui" "退出")
+options=("原版 x-ui" "MHSanaei 3x-ui" "vaxilu x-ui" "Misaka x-ui" "退出当前代码块")
 
 while true; do
   # 选择安装版本
@@ -112,11 +104,11 @@ while true; do
       cmd=${install_cmds[3]}
       break
       ;;
-    "退出")
-      exit 0
+    "退出当前代码块")
+      break 2
       ;;
     *)
-      echo "无效的选择，请输入1~4的数字."
+      echo "无效的选择，请输入1-5的数字."
       ;;
     esac
   done
@@ -134,6 +126,7 @@ while true; do
     break
   fi
 done
+
 
 
 # 提示用户选择是否重装 Nginx
