@@ -40,7 +40,6 @@ read -t 5 -p "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸�
 update=false
 for i in $(seq 5 -1 1); do
   echo -n "$i "
-  read -t 1 -n 1 key
 
 if [[ $input =~ ^[Yy]$ ]] || [[ $input == $'\n' ]];
 then
