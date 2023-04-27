@@ -81,7 +81,7 @@ echo -e "\n从GitLab下载CFwarp脚本并执行，该脚本用于开启CloudFlar
 wget -N https://gitlab.com/Misaka-blog/warp-script/-/raw/main/warp.sh && bash warp.sh
 
 # 定义选项数组
-options=("原版 x-ui" "MHSanaei 3x-ui" "vaxilu x-ui" "Misaka x-ui" "退出当前代码块")
+options=("原版 x-ui" "MHSanaei 3x-ui" "vaxilu x-ui" "Misaka x-ui" "退出当前并继续")
 
 while true; do
   # 选择安装版本
@@ -104,8 +104,8 @@ while true; do
       cmd=${install_cmds[3]}
       break
       ;;
-    "退出当前代码块")
-      break 2
+    "退出当前并继续")
+      break
       ;;
     *)
       echo "无效的选择，请输入1-5的数字."
@@ -113,19 +113,27 @@ while true; do
     esac
   done
 
-  # 运行命令进行安装
-  echo "即将运行以下安装命令："
-  echo "$cmd"
-  echo -e "\n请等待安装程序运行完成...\n"
-  sleep 1
-  eval "$cmd"
-
-  # 询问是否重新运行安装程序
-  read -p "安装完成，是否需要重新安装x-ui面板？(y/n):" reinstall
-  if [ "$reinstall" != "y" ]; then
+  if [ "$option" == "退出当前并继续" ]; then
     break
+  else
+    # 运行命令进行安装
+    echo "即将运行以下安装命令："
+    echo "$cmd"
+    echo -e "\n请等待安装程序运行完成...\n"
+    sleep 1
+    eval "$cmd"
+
+    # 询问是否重新运行安装程序
+    read -p "安装完成，是否需要重新安装x-ui面板？(y/n):" reinstall
+    if [ "$reinstall" != "y" ]; then
+      break
+    fi
   fi
 done
+
+
+echo "接下来继续..."
+
 
 
 
