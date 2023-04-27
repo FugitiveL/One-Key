@@ -209,7 +209,7 @@ echo -e "\n配置证书"
 
 read -p "请输入您的域名： " DOMAIN
 
-acme.sh --issue -d $DOMAIN -k ec-256 --webroot  /var/www/html
+acme.sh --issue -d $DOMAIN -k ec-256 --webroot  /var/www/html --force
 
 echo -e "\n acme...解析域名"
 acme.sh --install-cert -d $DOMAIN  
