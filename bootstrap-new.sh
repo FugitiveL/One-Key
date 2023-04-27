@@ -54,14 +54,6 @@ else
   uninstall_apache2
 fi
 
-# 检查用户输入的字符是否是空白字符（例如`Y`或`N`）
-if [[ $input =~ ^[Yy]$ ]]; then
-  echo "卸载 Apache2"
-  uninstall_apache2
-else
-  echo "已取消卸载"
-fi
-
 
 
 
