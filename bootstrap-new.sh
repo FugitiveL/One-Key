@@ -139,7 +139,7 @@ echo "接下来继续..."
 
 # 提示用户选择是否重装 Nginx
 echo  "建议重装 Nginx"
-read -t 5 -p "是否需要重装 Nginx？(y/n，默认5秒后自动选择重装): " -n 1 -r reinstall_nginx
+read -t 5 -p "是否需要重装 Nginx？(y/n，默认5秒后自动选择重装): " -n 1 -r reinstall_nginx || reinstall_nginx="y"
 echo ""
 if [[ $reinstall_nginx =~ ^[Yy]$ ]]
 then
@@ -149,6 +149,7 @@ then
    apt purge -y nginx
    apt install -y nginx
 fi
+
 
 echo -e "\n安装 acme 脚本，如有红色报错可忽略"
 curl https://get.acme.sh | sh
