@@ -34,8 +34,7 @@ function uninstall_apache2 {
     rm -f /etc/apt/sources.list.d/ct-preset.lis
 }
 
-# 提示用户选择是否重装 Nginx
-echo -n "是否需要重新安装 Nginx？(y/n，默认5秒后自动选择不安装): "
+echo -n "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载): "
 for i in $(seq 5 -1 1); do
   echo -n "$i "
   sleep 1
