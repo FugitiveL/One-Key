@@ -41,13 +41,13 @@ echo ""
 
 if [[ $input =~ ^[Yy]$ ]];
 then
-  # 自动选择卸载
   echo "卸载 Apache2"
   uninstall_apache2
 elif [[ $input == "" ]];
 then
   # 倒计时结束后无人操作
-  echo -e "\n倒计时结束，未收到响应"
+  echo -e "\n倒计时结束，自动选择卸载"
+  uninstall_apache2
 else
   # 手动选择
   echo -e "\n已手动执行卸载 Apache2"
