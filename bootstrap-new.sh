@@ -121,6 +121,13 @@ while true; do
   fi
 done
 
+# 定义4个版本的面板安装命令，方便根据需要选择
+install_cmds=(
+  "bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)"
+  "bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)"
+  "bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)"
+  "bash <(wget -qO- https://raw.githubusercontent.com/sing-web/x-ui/main/install.sh)"
+)
 
 # 定义选项数组
 options=("原版 x-ui" "MHSanaei 3x-ui" "vaxilu x-ui" "Misaka x-ui" "退出当前并继续")
