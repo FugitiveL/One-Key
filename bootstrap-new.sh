@@ -34,22 +34,24 @@ function uninstall_apache2 {
     rm -f /etc/apt/sources.list.d/ct-preset.lis
 }
 
+# 提示用户选择是否重装 Nginx
 read -t 5 -p "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载): " -n 1 -r input
+
 echo ""
-for i in {5..1}
-do
-    sleep 1
-    echo -ne "\r倒计时 $i"
-done
-echo ""
-read -r -s -n 1 -t 5 input
-if [[ $input == \n ]];
+
+if [[ $input =~ ^[Yy]$ ]];
 then
-    echo -e "\n已手动执行卸载 Apache2"
-    uninstall_apache2
+  # 自动选择卸载
+  echo "卸载 Apache2"
+  uninstall_apache2
+elif [[ $input == "" ]];
+then
+  # 倒计时结束后无人操作
+  echo -e "\n倒计时结束，未收到响应"
 else
-    # 等待`read`命令结束
-    wait $!
+  # 手动选择
+  echo -e "\n已手动执行卸载 Apache2"
+  uninstall_apache2
 fi
 
 # 检查用户输入的字符是否是空白字符（例如`Y`或`N`）
@@ -59,6 +61,7 @@ if [[ $input =~ ^[Yy]$ ]]; then
 else
   echo "已取消卸载"
 fi
+
 
 
 
@@ -136,7 +139,7 @@ done
 
 # 提示用户选择是否重装 Nginx
 echo  "建议重装 Nginx"
-read -t 3 -p "是否需要重装 Nginx？(y/n，默认5秒后自动选择重装): " -n 1 -r reinstall_nginx
+read -t 5 -p "是否需要重装 Nginx？(y/n，默认5秒后自动选择重装): " -n 1 -r reinstall_nginx
 echo ""
 if [[ $reinstall_nginx =~ ^[Yy]$ ]]
 then
