@@ -147,6 +147,7 @@ then
    systemctl stop nginx
    pkill -9 nginx
    apt purge -y nginx
+   apt --purge -y remove nginx*
    apt install -y nginx
 fi
 
