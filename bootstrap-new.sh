@@ -76,9 +76,51 @@ apt install curl -y
 echo -e "\n安装bash..."
 apt install bash -y
 
+# 定义选项数组
+options=("FSCARMEN-warp" "MISAKA-warp" "退出当前并继续")
 
-echo -e "\n从GitLab下载CFwarp脚本并执行，该脚本用于开启CloudFlare WARP隧道。"
-wget -N https://gitlab.com/Misaka-blog/warp-script/-/raw/main/warp.sh && bash warp.sh
+while true; do
+  # 选择安装版本
+  echo "请选择要安装的软件或服务："
+  select option in "${options[@]}"; do
+    case $option in
+    "FSCARMEN-warp")
+      cmd="wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh"
+      break
+      ;;
+    "MISAKA-warp")
+      cmd="wget -N https://gitlab.com/Misaka-blog/warp-script/-/raw/main/warp.sh && bash warp.sh"
+      break
+      ;;
+    "退出当前并继续")
+      break
+      ;;
+    *)
+      echo "无效的选择，请输入1-3的数字."
+      ;;
+    esac
+  done
+
+  if [ "$option" == "退出当前并继续" ];
+    then
+    break
+  else
+    # 运行命令进行安装
+    echo "即将运行以下安装命令："
+    echo "$cmd"
+    echo -e "\n请等待安装程序运行完成...\n"
+    sleep 1
+    eval "$cmd"
+
+    # 询问是否重新运行安装程序
+    read -p "安装完成，是否需要重新安装软件或服务？(y/n):" reinstall
+    if [ "$reinstall" != "y" ]; 
+	  then
+      break
+    fi
+  fi
+done
+
 
 # 定义选项数组
 options=("原版 x-ui" "MHSanaei 3x-ui" "vaxilu x-ui" "Misaka x-ui" "退出当前并继续")
