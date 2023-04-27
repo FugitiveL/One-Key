@@ -35,11 +35,15 @@ function uninstall_apache2 {
 }
 
 # 提示用户选择是否重装 Nginx
-read -t 5 -p "是否需要卸载 Apache2？(y/n，默认5秒后自动选择卸载): " -n 1 -r input
-
-update=false
+echo -n "是否需要重新安装 Nginx？(y/n，默认5秒后自动选择不安装): "
 for i in $(seq 5 -1 1); do
   echo -n "$i "
+  sleep 1
+done
+echo
+
+read -t 5 -n 1 -r input
+echo
 
 if [[ $input =~ ^[Yy]$ ]] || [[ $input == $'\n' ]];
 then
