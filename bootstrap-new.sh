@@ -64,7 +64,7 @@ fi
 
 
 
-echo -e "\n将IPv6 DNS服务器添加到resolv.conf文件。"
+echo -e "\n将对应的DNS添加到resolv.conf文件。"
 ip -4 addr show | grep -oP '(?<=inet\s)\d+(.\d+){3}' | while read ip; do echo "nameserver 8.8.8.8"; done > /etc/resolv.conf
 
 ip -6 addr show | grep -oP '(?<=inet6\s)[a-f0-9.:]+(?=/)' | while read ip; do echo "nameserver 2a01:4f8:c2c:123f::1"; done >> /etc/resolv.conf
